@@ -84,7 +84,7 @@ def show_alert(type, blink):
 
         # 사용자 지정 크기의 알림 창 생성
         custom_alert = tk.Toplevel(root)
-        custom_alert.geometry("400x200")  # 원하는 창 크기 (너비 x 높이)
+        custom_alert.geometry("200x100")  # 원하는 창 크기 (너비 x 높이)
         custom_alert.title("알림!")
 
         # 알림 메시지 설정
@@ -97,7 +97,7 @@ def show_alert(type, blink):
         label = tk.Label(custom_alert, text=alert_text, wraplength=380)
         label.pack(pady=20)
 
-        button = tk.Button(custom_alert, text="확인", command=custom_alert.destroy)
+        button = tk.Button(custom_alert, text="영상을 다시 시청하기", command=custom_alert.destroy)
         button.pack(pady=10)
 
         # 알림 소리 재생
