@@ -62,7 +62,7 @@ def show_alert(type, blink):
     if os_name == 'Darwin':
         pool = NSAutoreleasePool.alloc().init()
         alert = NSAlert.alloc().init()
-        alert.setMessageText_("경고!")
+        alert.setMessageText_("알림!")
 
         if type == 'face':
             alert.setInformativeText_("화면에서 얼굴이 보이지 않아요. 화면을 보며 학습에 집중해 볼까요?")
@@ -78,17 +78,35 @@ def show_alert(type, blink):
     # if computer is running on Windows
     elif os_name == 'Windows':
         import winsound
-        root = tk.Tk() 
+        root = tk.Tk()
         root.attributes("-topmost", True)  # Ensure the alert window is on top
         root.withdraw()  # Hide the tkinter window
 
-        if type == 'face':
-            winsound.Beep(1500, 300) 
-            tk.messagebox.showwarning("알림!", "화면에서 얼굴이 보이지 않아요. 화면을 보며 학습에 집중해 볼까요?")
-        elif type == 'eye':
-            winsound.Beep(1500, 300) 
-            tk.messagebox.showwarning("알림!", "눈을 감고 계신 시간이 길어지고 있어요. 화면을 보며 학습에 집중해 볼까요?")
+        # 사용자 지정 크기의 알림 창 생성
+        custom_alert = tk.Toplevel(root)
+        custom_alert.geometry("400x200")  # 원하는 창 크기 (너비 x 높이)
+        custom_alert.title("알림!")
 
+        # 알림 메시지 설정
+        if type == 'face':
+            alert_text = "화면에서 얼굴이 보이지 않아요. 화면을 보며 학습에 집중해 볼까요?"
+        elif type == 'eye':
+            alert_text = "눈을 감고 계신 시간이 길어지고 있어요. 화면을 보며 학습에 집중해 볼까요?"
+
+        # 알림 텍스트와 확인 버튼 추가
+        label = tk.Label(custom_alert, text=alert_text, wraplength=380)
+        label.pack(pady=20)
+
+        button = tk.Button(custom_alert, text="확인", command=custom_alert.destroy)
+        button.pack(pady=10)
+
+        # 알림 소리 재생
+        winsound.Beep(1500, 300)
+
+        # 창을 주 창 위에 위치시키고 닫을 때까지 대기
+        custom_alert.transient(root)  # Show on top of root
+        custom_alert.grab_set()       # Prevent interaction with other windows
+        root.wait_window(custom_alert)  # Wait until the custom alert is closed
         root.destroy()
     
     vid.toggle_pause()
